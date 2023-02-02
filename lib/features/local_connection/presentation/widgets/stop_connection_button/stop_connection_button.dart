@@ -1,0 +1,27 @@
+import 'package:flutter/material.dart';
+import 'package:nearby_connections/nearby_connections.dart';
+import 'package:student_marker/core/genral_use/constants.dart';
+import 'package:student_marker/core/injection/injection_model.dart';
+import 'package:student_marker/features/local_connection/presentation/manager/connection_cubit.dart';
+import 'package:student_marker/features/local_connection/presentation/widgets/permisson_granted_widgets/permission_granted_button.dart';
+class StopConnectionButton extends StatelessWidget {
+  const StopConnectionButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).size.height * 0.01,
+          right: MediaQuery.of(context).size.width * 0.375),
+      child: FloatingActionButton(
+          onPressed: () async {
+             Nearby().stopDiscovery();
+             PermissionGrantedButton.availableCourses=[];
+             getIt<ConnectionCubit>().checkPermissions();
+          },
+          backgroundColor: Colors.red,
+          tooltip: AllTexts.stopButton,
+          child: const Icon(Icons.power_settings_new_outlined)),
+    );
+  }
+}

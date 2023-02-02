@@ -1,0 +1,59 @@
+name: student_marker
+description: A new Flutter project.
+
+publish_to: 'none'
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.0 <3.0.0'
+
+dependencies:
+  build_runner: ^2.2.1
+  nearby_connections: ^3.2.0
+  flutter_bloc: ^8.1.1
+  auto_size_text: ^3.0.0
+  flutter_styled_toast: ^2.1.3
+  bloc: ^8.1.0
+  freezed: ^2.1.1
+  get_it: ^7.2.0
+  shared_preferences: ^2.0.15
+  flutter_native_splash: ^2.2.9
+  flutter_gen: ^0.0.5
+  device_preview: ^1.1.0
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/picture/student_icon.png
+
+  android_12:
+    image: assets/picture/student_icon.png
+    icon_background_color: "#ffffff"
+
+
+
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.10.0
+
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/picture/
+
+  fonts:
+    - family: RubikDistressed
+      fonts:
+        - asset: assets/fonts/RubikDistressed-Regular.ttf
+          style: italic
+
