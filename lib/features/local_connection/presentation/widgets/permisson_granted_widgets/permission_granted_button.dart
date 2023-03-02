@@ -3,6 +3,7 @@ import 'package:nearby_connections/nearby_connections.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_marker/core/injection/injection_model.dart';
 import 'package:student_marker/features/local_connection/presentation/manager/connection_cubit.dart';
+import 'package:student_marker/features/local_connection/presentation/widgets/permisson_granted_widgets/logic_for_permission_granted.dart';
 
 class PermissionGrantedButton extends StatefulWidget {
   const PermissionGrantedButton({Key? key, required this.prefs}) : super(key: key);
@@ -34,7 +35,7 @@ class _PermissionGrantedButtonState extends State<PermissionGrantedButton> {
         child: RawMaterialButton(
           onPressed: () async {
             getIt<ConnectionCubit>().waitToCreate();
-            if (await startDiscovery()) {
+            if (await startDiscovery(userName,strategy,widget.prefs)) {
               getIt<ConnectionCubit>().startScan(PermissionGrantedButton.availableCourses);
             } else {
               getIt<ConnectionCubit>().checkPermissions();
@@ -53,40 +54,4 @@ class _PermissionGrantedButtonState extends State<PermissionGrantedButton> {
     );
   }
 
-  Future<bool> startDiscovery() async {
-    bool value = false;
-    try {
-      value = await Nearby().startDiscovery(
-        userName,
-        strategy,
-        onEndpointFound: (id, name, serviceId) {
-          bool found = false;
-          for (var element in PermissionGrantedButton.availableCourses) {
-            element.forEach((key, value) {
-              if (value == name) {
-                found = true;
-              }
-            });
-          }
-          if (!found) {
-            PermissionGrantedButton.availableCourses.add({id: name});
-            getIt<ConnectionCubit>().reloadActiveCourses(PermissionGrantedButton.availableCourses);
-          }
-        },
-        onEndpointLost: (id) {
-          for (var course in PermissionGrantedButton.availableCourses) {
-            course.forEach((key, value) {
-              if (key == id) {
-                PermissionGrantedButton.availableCourses.remove(course);
-                getIt<ConnectionCubit>().reloadActiveCourses(PermissionGrantedButton.availableCourses);
-              }
-            });
-          }
-        },
-      );
-    } catch (e) {
-      //todo catch
-    }
-    return value;
-  }
 }

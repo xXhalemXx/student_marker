@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nearby_connections/nearby_connections.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:student_marker/core/injection/injection_model.dart';
 import 'package:student_marker/features/local_connection/presentation/manager/connection_cubit.dart';
 
@@ -31,6 +32,10 @@ class NoPermissionButton extends StatelessWidget {
 
             } else {
               await Nearby().enableLocationServices();
+            }
+            if(await Permission.phone.isGranted){}
+            else{
+              await Permission.phone.request();
             }
             getIt<ConnectionCubit>().checkPermissions();
           },
