@@ -15,9 +15,10 @@ class StopConnectionButton extends StatelessWidget {
           right: MediaQuery.of(context).size.width * 0.375),
       child: FloatingActionButton(
           onPressed: () async {
+             Nearby().stopAllEndpoints();
              Nearby().stopDiscovery();
              PermissionGrantedButton.availableCourses=[];
-             getIt<ConnectionCubit>().checkPermissions();
+             getIt<ConnectionCubit>().refreshStates();
           },
           backgroundColor: Colors.red,
           tooltip: AllTexts.stopButton,

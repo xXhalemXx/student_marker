@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:student_marker/core/injection/injection_model.dart';
+import 'package:student_marker/features/local_connection/presentation/manager/connection_cubit.dart';
 
 class UpdateIdButton extends StatelessWidget {
   final TextEditingController newStudentId;
@@ -39,6 +41,7 @@ class UpdateIdButton extends StatelessWidget {
     if (formKey.currentState!.validate()) {
       prefs.setString('studentId', newStudentId.text);
       Navigator.pop(context);
+      getIt<ConnectionCubit>().refreshStates();
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         backgroundColor: Color(0xffffffff),
         duration: Duration(seconds: 2),

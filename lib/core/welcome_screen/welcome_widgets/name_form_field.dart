@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NameFormField extends StatelessWidget {
-  const NameFormField({super.key, required this.doctorName});
+  const NameFormField({super.key, required this.studentId});
 
-  final TextEditingController doctorName;
+  final TextEditingController studentId;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class NameFormField extends StatelessWidget {
 
   Widget textField(String text) => TextFormField(
         style: const TextStyle(color: Colors.white),
-        controller: doctorName,
+        controller: studentId,
         keyboardType: TextInputType.number,
         textAlign: TextAlign.left,
         cursorColor: Colors.white,

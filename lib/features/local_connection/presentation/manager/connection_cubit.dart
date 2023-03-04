@@ -27,6 +27,11 @@ class ConnectionCubit extends Cubit<ConnectionStates> {
     emit(const Wanting());
   }
 
+  refreshStates() {
+    emit(const Wanting());
+    checkPermissions();
+
+  }
 
 
 }

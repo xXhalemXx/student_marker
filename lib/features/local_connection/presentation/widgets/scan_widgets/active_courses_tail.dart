@@ -4,6 +4,7 @@ import 'package:nearby_connections/nearby_connections.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_marker/core/genral_use/constants.dart';
 import 'package:student_marker/features/local_connection/presentation/widgets/permisson_granted_widgets/permission_granted_button.dart';
+import 'package:student_marker/features/local_connection/presentation/widgets/scan_widgets/connection_dialogs_result.dart';
 
 class ActiveCoursesTail extends StatefulWidget {
   const ActiveCoursesTail(
@@ -22,6 +23,14 @@ class _ActiveCoursesTailState extends State<ActiveCoursesTail> {
   String courseName = '';
   String courseId = '';
   int connectionCode = 0;
+  int statusCode=10;
+  bool taped =false;
+
+  //values from payload
+  //status codes 0-> student attended
+  //status codes 1-> student not rolled in this class
+  //status codes 2-> student already attended
+  //status codes 3-> student used this device to attend
 
   //connection code
   //0 => idl
@@ -32,6 +41,7 @@ class _ActiveCoursesTailState extends State<ActiveCoursesTail> {
   @override
   void initState() {
     userName = widget.prefs.getString('studentId')!;
+    userName = userName+widget.prefs.getString('IMEI')!;
     widget.courseValue.forEach((key, value) {
       courseName = value;
       courseId = key;
@@ -63,64 +73,6 @@ class _ActiveCoursesTailState extends State<ActiveCoursesTail> {
     );
   }
 
-  tapCourse(String id) {
-    if (connectionCode == 0 || connectionCode == 3) {
-      setState(() {
-        connectionCode = 1;
-      });
-
-      Nearby().requestConnection(
-        userName,
-        id,
-        onConnectionInitiated: (id, info) {
-          onConnectionInit(id, info);
-          Nearby().stopDiscovery();
-        },
-        onConnectionResult: (id, status) {
-
-          if (status == Status.CONNECTED) {
-            setState(() {
-              connectionCode = 4;
-            });
-          } else if (status == Status.REJECTED) {
-            setState(() {
-              connectionCode = 2;
-            });
-          } else if (status == Status.ERROR) {
-            setState(() {
-              connectionCode = 3;
-            });
-          }
-        },
-        onDisconnected: (id) {
-          PermissionGrantedButton.availableCourses.remove(widget.courseValue);
-          setState(() {
-            connectionCode = 4;
-          });
-        },
-      );
-    }else if(connectionCode==2) {
-      rejectedDialog();
-
-    } else {
-      debugPrint('do nothing');
-    }
-  }
-
-  rejectedDialog(){
-    showDialog(context: context, builder: (_){
-      return AlertDialog(
-        title: const Text(AllTexts.error,style: TextStyle(color: AllColors.failConnectionColor),),
-        content: const Text(AllTexts.connectionRejected),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-        actions: [TextButton(onPressed: (){
-          Navigator.pop(context);
-        }, child: const Text(AllTexts.ok))],
-      );
-    });
-  }
-
-
   String removeUnderscore(String value) {
     List tempCourses = value.split('');
     String tempString = '';
@@ -134,30 +86,91 @@ class _ActiveCoursesTailState extends State<ActiveCoursesTail> {
     return tempString;
   }
 
-  void onConnectionInit(String id, ConnectionInfo info) {
-    Nearby().acceptConnection(
+  tapCourse(String id) {
+    if(!taped) {
+     firstTapFun(id);
+    }else{
+     secondTapFun();
+    }
+  }
+
+  firstTapFun(String id){
+    setState(() {
+      connectionCode = 100;
+    });
+    Nearby().requestConnection(
+      userName,
       id,
-      onPayLoadRecieved: (_, payload) {},
+      onConnectionInitiated: (id, info) {
+        Nearby().acceptConnection(
+          id,
+          onPayLoadRecieved: (_, payload) {
+            String str = String.fromCharCodes(payload.bytes!);
+            if (int.parse(str) == 0) {
+              statusCode =0;
+            } else if (int.parse(str) == 1) {
+              statusCode =1;
+            } else if (int.parse(str) == 2) {
+              statusCode =2;
+            } else if (int.parse(str) == 3) {
+              statusCode =3;
+            }
+          },
+        );
+        Nearby().stopDiscovery();
+      },
+      onConnectionResult: (id, status) {
+        if (status == Status.CONNECTED) {
+          setState(() {
+            connectionCode = 200;
+          });
+        } else if (status == Status.ERROR) {
+          setState(() {
+            connectionCode = 300;
+          });
+        }
+      },
+      onDisconnected: (id) async {
+        await Future.delayed(const Duration(seconds: 1));
+        setState(() {
+          connectionCode = 400;
+        });
+      },
     );
+    taped =true;
+  }
+
+  secondTapFun(){
+    if(statusCode ==0) {
+      attendedDialog(context);
+    }else if(statusCode ==1){
+     notRolledInDialog(context);
+    }else if(statusCode ==2){
+      alreadyAttendedDialog(context);
+    }else if(statusCode ==3){
+     usingSameDeviceDialog(context);
+    }else {
+      unknownResult(context);
+    }
   }
 
   Widget subtitleValue() {
-    if (connectionCode == 1) {
+    if (connectionCode == 100) {
       return const Text(
         AllTexts.tryToConnect,
       );
-    } else if (connectionCode == 2) {
+    } else if (connectionCode == 200) {
       return const AutoSizeText(
-        AllTexts.rejectedConnection,
+        AllTexts.connected,
         maxLines: 1,
-        style: TextStyle(color: AllColors.failConnectionColor),
+        style: TextStyle(color: AllColors.successColor),
       );
-    } else if (connectionCode == 3) {
+    } else if (connectionCode == 300) {
       return const Text(AllTexts.errorInConnection,
           style: TextStyle(color: AllColors.failConnectionColor));
-    } else if (connectionCode == 4) {
-      return const Text(AllTexts.assigned,
-          style: TextStyle(color: AllColors.successColor));
+    } else if (connectionCode == 400) {
+      return const Text(AllTexts.disconnected,
+          style: TextStyle(color: AllColors.disconnectedColor));
     } else {
       return const Text(
         AllTexts.tapToConnect,
@@ -166,23 +179,21 @@ class _ActiveCoursesTailState extends State<ActiveCoursesTail> {
   }
 
   Widget trailingValue() {
-    if (connectionCode == 1) {
+    if (connectionCode == 100) {
       return const SizedBox(
           width: 20, height: 20, child: CircularProgressIndicator());
-    } else if (connectionCode == 2) {
-      return const Icon(
-        Icons.wifi_off_rounded,
-        color: AllColors.failConnectionColor,
-      );
-    } else if (connectionCode == 3) {
+    } else if (connectionCode == 200) {
+      return const SizedBox(
+          width: 20, height: 20, child: CircularProgressIndicator(color: AllColors.successColor,));
+    } else if (connectionCode == 300) {
       return const Icon(
         Icons.dangerous,
         color: AllColors.failConnectionColor,
       );
-    } else if (connectionCode == 4) {
+    } else if (connectionCode == 400) {
       return const Icon(
         Icons.done,
-        color: AllColors.successColor,
+        color: AllColors.disconnectedColor,
       );
     } else {
       return const Icon(

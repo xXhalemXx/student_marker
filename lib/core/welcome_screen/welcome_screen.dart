@@ -8,7 +8,7 @@ import 'package:student_marker/core/welcome_screen/welcome_widgets/save_button.d
 class WelcomeScreen extends StatelessWidget {
   WelcomeScreen({super.key,required this.prefs});
 
-  final TextEditingController doctorName = TextEditingController();
+  final TextEditingController studentId = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final SharedPreferences prefs;
 
@@ -30,10 +30,10 @@ class WelcomeScreen extends StatelessWidget {
               const CustomPaintForLogin(),
               const HelloText(),
               NameFormField(
-                doctorName: doctorName,
+                studentId: studentId,
               ),
               SaveButton(
-                doctorName: doctorName,
+                studentId: studentId,
                 formKey: formKey,
                 prefs: prefs,
               ),

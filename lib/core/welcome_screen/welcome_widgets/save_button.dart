@@ -8,11 +8,11 @@ import 'package:student_marker/features/local_connection/presentation/pages/conn
 class SaveButton extends StatefulWidget {
   const SaveButton({super.key,
     required this.formKey,
-    required this.doctorName,
+    required this.studentId,
     required this.prefs
   });
 
-  final TextEditingController doctorName;
+  final TextEditingController studentId;
   final GlobalKey<FormState> formKey;
 
   final SharedPreferences prefs;
@@ -67,7 +67,7 @@ class _SaveButtonState extends State<SaveButton> {
       setState(() {
         waiting=true;
       });
-      widget.prefs.setString('studentId', widget.doctorName.text);
+      widget.prefs.setString('studentId', widget.studentId.text);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

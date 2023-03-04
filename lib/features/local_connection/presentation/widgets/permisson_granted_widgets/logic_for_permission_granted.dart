@@ -11,10 +11,8 @@ Future<bool> startDiscovery(String userName,Strategy strategy, SharedPreferences
     imeiNo = await DeviceInformation.deviceIMEINumber;
   // ignore: empty_catches
   }  catch(err){
-    print(err);
   }
-  userName+=imeiNo;
-  print("user name : $userName");
+ prefs.setString('IMEI', imeiNo);
   bool value = false;
   try {
     value = await Nearby().startDiscovery(
