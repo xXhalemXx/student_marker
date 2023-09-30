@@ -20,40 +20,40 @@ Student marker addresses the challenge of taking attendance without access to fa
 ### Initial Setup
 1. Upon the first launch, you will see the initial setup screen.
 <p align="center">
-<img src="https://github.com/xXhalemXx/student_marker/blob/main/AppScreenShots/image1.jpg"  width="300" height="600">
+<img src="https://github.com/xXhalemXx/student_marker/blob/master/AppScreenShots/image1.jpg"  width="300" height="600">
  
 2. Once you enter your ID will ask for permissions if required.
 <p align="center">
-<img src="https://github.com/xXhalemXx/student_marker/blob/main/AppScreenShots/image2.jpg"  width="300" height="600">
+<img src="https://github.com/xXhalemXx/student_marker/blob/master/AppScreenShots/image2.jpg"  width="300" height="600">
 
  3. After providing all required permissions will open this page..
 <p align="center">
-<img src="https://github.com/xXhalemXx/student_marker/blob/main/AppScreenShots/image3.jpg"  width="300" height="600">
+<img src="https://github.com/xXhalemXx/student_marker/blob/master/AppScreenShots/image3.jpg"  width="300" height="600">
  
 ### Editing Your ID
 4. To edit your ID ,press on edit button.
 <p align="center">
-<img src="https://github.com/xXhalemXx/student_marker/blob/main/AppScreenShots/image4.jpg"  width="300" height="600">
+<img src="https://github.com/xXhalemXx/student_marker/blob/master/AppScreenShots/image4.jpg"  width="300" height="600">
 
  ### Taking Attendance
 5. To take attendance press on connection button ,will start scan to available course created by [E-sheet](https://github.com/xXhalemXx/E-sheet) .
 <p align="center">
- <img src="https://github.com/xXhalemXx/student_marker/blob/main/AppScreenShots/image5.jpg"  width="300" height="600">
+ <img src="https://github.com/xXhalemXx/student_marker/blob/master/AppScreenShots/image5.jpg"  width="300" height="600">
  
 6. Once course found will show like this.
 <p align="center">
- <img src="https://github.com/xXhalemXx/student_marker/blob/main/AppScreenShots/image6.jpg"  width="300" height="600">
+ <img src="https://github.com/xXhalemXx/student_marker/blob/master/AppScreenShots/image6.jpg"  width="300" height="600">
 
 7. Loading while connecting and check if u rolled in this course.
 <p align="center">
- <img src="https://github.com/xXhalemXx/student_marker/blob/main/AppScreenShots/image7.jpg"  width="300" height="600">
- <img src="https://github.com/xXhalemXx/student_marker/blob/main/AppScreenShots/image8.jpg"  width="300" height="600">
+ <img src="https://github.com/xXhalemXx/student_marker/blob/master/AppScreenShots/image7.jpg"  width="300" height="600">
+ <img src="https://github.com/xXhalemXx/student_marker/blob/master/AppScreenShots/image8.jpg"  width="300" height="600">
 
 8. Different respond message depend in your state .
 <p align="center">
- <img src="https://github.com/xXhalemXx/student_marker/blob/main/AppScreenShots/image9.jpg"  width="300" height="600">
- <img src="https://github.com/xXhalemXx/student_marker/blob/main/AppScreenShots/image10.jpg"  width="300" height="600">
-  <img src="https://github.com/xXhalemXx/student_marker/blob/main/AppScreenShots/image11.jpg"  width="300" height="600">
+ <img src="https://github.com/xXhalemXx/student_marker/blob/master/AppScreenShots/image9.jpg"  width="300" height="600">
+ <img src="https://github.com/xXhalemXx/student_marker/blob/master/AppScreenShots/image10.jpg"  width="300" height="600">
+  <img src="https://github.com/xXhalemXx/student_marker/blob/master/AppScreenShots/image11.jpg"  width="300" height="600">
 
 ## Credits
 one of most important helpers third-party packages i will list them in next table 
